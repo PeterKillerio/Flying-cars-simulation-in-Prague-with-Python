@@ -1,0 +1,58 @@
+# time that represents 0 AM IS 0 AND AT *6 AM ITS 21,600
+GLOBAL_TIME = 21600
+GLOBAL_TIME_HOURS = str(int(21600/60/60))
+GLOBAL_TIME_MINUTES = 0
+# This is the equal change where the probability will be same across country/city *11 AM
+GLOBAL_TIME_CHANGE_EQUAL = 39600
+# This is the time where the probabilities reverse *3 PM
+GLOBAL_TIME_CHANGE_REVERSE = 54000
+# We will stop the simulation at *8 PM
+GLOBAL_TIME_END_TIME = 72000
+
+
+
+LOADED_BOXES = load_data_start_calculation.loaded_boxes
+
+#*****************************************************
+################# PARAMETERS #########################
+
+# MINIMAL DISTANCE BETWEEN CHOSEN VEHICLES IN PIXELS
+MINIMAL_DISTANCE = 150 # About 4.5 km
+# TOTAL VEHICLES IN PRAGUE
+TOTAL_VEHICLES = 851000
+# PERCENTAGE OF USED VEHICLES FROM TOTAL AT THAT DAY *70%
+PERCENTAGE_USED_VEHICLES = 0.8
+# PERCENTAGE OF FLYING CARS *1%
+PERCENTAGE_FLYING_CARS = 0.01
+# PERCENTAGE OF FLYING CARS USED AT NOON
+PERCENTAGE_FLYING_CARS_NOON = 0.87
+
+#*****************************************************
+#TOTAL FLYING CARS MORNING/AFTERNOON
+FLYING_CARS = (TOTAL_VEHICLES*PERCENTAGE_USED_VEHICLES)*PERCENTAGE_FLYING_CARS
+
+#FLYING VEHICLES USED NOON
+FLYING_CARS_NOON = FLYING_CARS*PERCENTAGE_FLYING_CARS_NOON
+
+# we calculate the span of time in minutes we have available and divide the cars accordingly
+MORNING_BORDER = load_data_start_calculation.GLOBAL_TIME_CHANGE_EQUAL
+NOON_BORDER = load_data_start_calculation.GLOBAL_TIME_CHANGE_REVERSE
+AFTERNOON_BORDER = load_data_start_calculation.GLOBAL_TIME_END_TIME
+
+DURATION_MORNING = (MORNING_BORDER - load_data_start_calculation.GLOBAL_TIME)/60
+DURATION_NOON = (NOON_BORDER - load_data_start_calculation.GLOBAL_TIME_CHANGE_EQUAL)/60
+DURATION_AFTERNOON = (AFTERNOON_BORDER - load_data_start_calculation.GLOBAL_TIME_CHANGE_REVERSE)/60
+
+#VEHICLES PER MINUTE MORNING
+Vehicles_pm_M = FLYING_CARS/DURATION_MORNING
+#VEHICLES PER MINUTE NOON
+Vehicles_pm_N = FLYING_CARS_NOON/DURATION_NOON
+#VEHICLES PER MINUTE AFTERNOON
+Vehicles_pm_AN = FLYING_CARS/DURATION_AFTERNOON
+VEHICLES_FLOWN = 0
+
+
+
+## DATA TO BE SAVED IN CSV ##
+VEHICLES_INFO = [[], [], []] #Morning Noon Afternoon
+WAS_SAVED = False
